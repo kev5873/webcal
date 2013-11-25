@@ -11,7 +11,6 @@ if($statement->fetch())
 	echo "Login success";
 	$_SESSION['pid'] = $pid;
 	$_SESSION['priv'] = $priv;
-
 }
 else
 {

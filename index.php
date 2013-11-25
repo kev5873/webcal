@@ -7,6 +7,7 @@
 <body>
 	<?php
 	if(isset($_SESSION['pid'])) { 
+		include("nav.php");
 		echo "Welcome";
 	} else {
 		echo '
