@@ -35,5 +35,6 @@ VALUES (? ,? ,? , ?);
         $statement->execute() or die($mysqli->error);
     }
     ?>
+    <br /><a href='index.php'>Back to Account</a>
 </body>
 </html>

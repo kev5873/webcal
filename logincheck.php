@@ -18,4 +18,4 @@ else
 	echo "Login Failed";
 }
 ?>
-<a href='index.php'>Go to Account</a>
+<br /><a href='index.php'>Back Home</a>

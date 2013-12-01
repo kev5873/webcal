@@ -28,5 +28,6 @@ if(isset($_SESSION['pid'])) {
 		echo 'Please Login';
     }
     ?>
+    <br /><a href='index.php'>Back to Account</a>
 </body>
 </html>

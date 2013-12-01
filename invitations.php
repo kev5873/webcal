@@ -30,13 +30,7 @@ if(isset($_SESSION['pid'])) {
             <option value="2">Decline</option>
         </select>
         Level
-        <select name="visibility">
-            <option value="'.$_SESSION['priv'].'">'.$_SESSION['priv'].'</option>
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-        </select>
+        <input type="text" name="visibility" value="'.$_SESSION['priv'].'" style="width: 20px;">
         <input type="submit">
         </form></div>';
         echo '<div class="clear"></div></div>';

@@ -31,5 +31,6 @@ if(isset($_SESSION['pid'])) {
     }
     ?>
     </form>
+    <br /><a href='index.php'>Back to Account</a>
 </body>
 </html>
