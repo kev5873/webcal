@@ -1,0 +1,31 @@
+SELECT eid, start_time, edate, duration, description FROM event NATURAL JOIN eventdate WHERE edate BETWEEN ? AND ? AND eid IN ( SELECT eid FROM event NATURAL JOIN invited WHERE invited.response = 1 );
+
+UPDATE invited SET response = ?, visibility = ? WHERE eid = ? AND pid = ?;
+
+SELECT event.eid, event.start_time, event.duration, event.description, invited.visibility FROM event, invited
+NATURAL JOIN eventdate
+WHERE event.eid = invited.eid AND edate = ? AND invited.pid = ?;
+
+SELECT eid, response, visibility FROM invited WHERE pid = ?;
+
+SELECT pid, fname, lname FROM person;
+
+SELECT pid FROM event WHERE eid = ?;
+
+INSERT INTO invited (pid, eid, response, visibility) VALUES (? ,?, ? ,?);
+
+SELECT * FROM person WHERE pid = ? AND passwd = md5(?);
+
+SELECT event.eid,eventdate.edate,event.start_time,event.duration,event.description,event.pid, count(invited.eid) AS number_attending        
+FROM event NATURAL JOIN eventdate
+LEFT JOIN invited
+ON (event.eid = invited.eid)
+WHERE event.pid = ? AND invited.response = 1
+GROUP BY event.eid;
+
+INSERT INTO event (start_time ,duration ,description ,pid)
+VALUES (? ,? ,? , ?);
+
+INSERT INTO eventdate (eid, edate) VALUES (? ,?);
+
+INSERT INTO invited (pid ,eid ,response ,visibility) VALUES (? ,? ,? ,?);
