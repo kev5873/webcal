@@ -5,19 +5,20 @@ if(isset($_SESSION['pid'])) {
     $statement = $mysqli->prepare("INSERT INTO event (start_time ,duration ,description ,pid)
 VALUES (? ,? ,? , ?);
     ") or die($mysqli->error);
-    $statement->bind_param("ssss", $_POST['startTime'] , $_POST['duration'], $_POST['description'],  $_SESSION['pid']);
+    $statement->bind_param("ssss", $mysqli->real_escape_string($_POST['startTime']) , $mysqli->real_escape_string($_POST['duration']), $mysqli->real_escape_string($_POST['description']),  $_SESSION['pid']);
 }
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <title>WebCal</title>
+    <link rel="stylesheet" href="index.css" />
 </head>
 <body>
     <?php
     if(isset($_SESSION['pid'])) { 
         $statement->execute() or die($mysqli->error);
-        echo "Event: " . $_POST['startTime'] . ", " . $_POST['duration'] . ", " . $_POST['description'] . ", " . $_SESSION['pid'] . " inserted.";
+        echo "Event: " . $mysqli->real_escape_string($_POST['startTime']) . ", " . $mysqli->real_escape_string($_POST['duration']) . ", " . $mysqli->real_escape_string($_POST['description']) . ", " . $_SESSION['pid'] . " inserted.";
         $doneId = $mysqli->insert_id;
         foreach ($_POST['date'] as $datetime)
         {
@@ -30,7 +31,7 @@ VALUES (? ,? ,? , ?);
         }
         $statement = $mysqli->prepare("INSERT INTO invited (pid ,eid ,response ,visibility) VALUES (? ,? ,? ,?);
         ") or die($mysqli->error);
-        $statement->bind_param("ssii", $_SESSION['pid'], $doneId, $a = 1, $a = 1);
+        $statement->bind_param("ssii", $_SESSION['pid'], $doneId, $a = 1, $_SESSION['priv']);
         $statement->execute() or die($mysqli->error);
     }
     ?>

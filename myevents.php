@@ -2,34 +2,26 @@
 session_start();
 include("dbconfig.php");
 if(isset($_SESSION['pid'])) { 
-    $statement = $mysqli->prepare(" SELECT event.eid,event.start_time,event.duration,event.description,event.pid, count(invited.eid) AS number_attending        
-FROM event
-LEFT JOIN invited
-ON (event.eid = invited.eid)
-WHERE event.pid = ?
-GROUP BY event.eid
+    $statement = $mysqli->prepare("SELECT event.eid,eventdate.edate,event.start_time,event.duration,event.description,event.pid, count(invited.eid) AS number_attending        
+    FROM event NATURAL JOIN eventdate
+    LEFT JOIN invited
+    ON (event.eid = invited.eid)
+    WHERE event.pid = ? AND invited.response = 1
+    GROUP BY event.eid
     ") or die($mysqli->error);
     $statement->bind_param("s", $_SESSION['pid'] );
     $statement->execute();
-    $result = $statement->bind_result($eid, $start, $duration, $description, $pid, $invited);
+    $result = $statement->bind_result($eid, $date, $start, $duration, $description, $pid, $invited);
+    echo "<div class='title'>My Events</div>";
+	while($statement->fetch())
+    {
+        echo "<div class='entry'>";
+        echo "<div class='left'><span class='bold'>$eid - $description</span><br />Duration: $duration <a href='issueInvitation.php?eid=$eid'>Invite</a></div>";
+        echo "<div class='right'>Attending: $invited<br />$date, $start</div>";
+        echo "<div class='clear'></div></div>";
+    }
+}
+else {
+	echo 'Please Login';
 }
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>WebCal</title>
-</head>
-<body>
-	<?php
-	if(isset($_SESSION['pid'])) { 
-        echo "Here are the events you've organized: <br />";
-		while($statement->fetch())
-        {
-            echo $eid . ' ' . $start . ' ' . $duration . ' ' . $description . ' ' . $pid . ' ' . $invited . '<a href="issueInvitation.php?eid=' . $eid . '">Issue Invites</a><br />';
-        }
-	} else {
-		echo 'Please Login';
-    }
-    ?>
-</body>
-</html>
