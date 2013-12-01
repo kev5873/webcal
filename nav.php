@@ -1,12 +1,10 @@
 <?
 include("dbconfig.php");
 if(isset($_SESSION['pid'])) { 
-    $statement = $mysqli->prepare("
-        SELECT sharer FROM friend_of WHERE viewer = ?
-    ") or die($mysqli->error);
+    $statement = $mysqli->prepare("SELECT sharer, level FROM friend_of WHERE viewer = ?") or die($mysqli->error);
     $statement->bind_param("s", $_SESSION['pid']);
     $statement->execute();
-    $result = $statement->bind_result($sharer);
+    $result = $statement->bind_result($sharer, $level);
 }
 ?>
 <a href="todayschedule.php">Today Schedule</a> | <a href="myevents.php">Events I've Organized</a> | <a href="invitations.php">Invitations</a> | <a href="logout.php">Log Out</a>
@@ -31,11 +29,12 @@ if(isset($_SESSION['pid'])) {
 </form>
 <h2> Friend's Schedule </h2>
 <?
-echo '<form method="post" action="friendScheduleDo.php">
-        <input type="text" name="date" placeholder="date" /><select>';
+echo '<form method="post" action="friendSchedule.php">
+        <input type="text" name="date" placeholder="date" />
+        <select name="friend">';
         while($statement->fetch())
         {
-            echo '<option value="'.$sharer.'">' . $sharer . '</option><br />';
+            echo '<option value="'.$sharer.';'.$level.'">' . $sharer . '</option><br />';
         }
         echo "</select>
             <button type='submit'>View Friend's Schedule</button>

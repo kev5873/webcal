@@ -18,10 +18,27 @@ if(isset($_SESSION['pid'])) {
 <body>
 	<?php
 	if(isset($_SESSION['pid'])) { 
-        echo "Here are all your invitations: ";
+        echo "Here are all your invitations: <br />";
 		while($statement->fetch())
         {
-            echo $eid . ' ' . $response . ' ' . $visibility . '<br />';
+            echo 'Event: ' . $eid . ' Visibility Level: ' . $visibility . ' <br />';
+            echo ($response == 1) ? 'Accepted' : 'Declined';
+            echo '<form method="post" action="changeInvite.php">
+            <input type="hidden" name="eid" value="'.$eid.'">
+            Your Response
+            <select name="response">
+                <option value="1">Accept</option>
+                <option value="2">Decline</option>
+            </select>
+            Level
+            <select name="visibility">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+            <input type="submit">
+            </form><br />';
         }
 	} else {
 		echo 'Please Login';

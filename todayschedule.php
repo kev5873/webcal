@@ -21,16 +21,16 @@ if(isset($_SESSION['pid'])) {
     <title>WebCal</title>
 </head>
 <body>
-	<?php
-	if(isset($_SESSION['pid'])) { 
+        <?php
+        if(isset($_SESSION['pid'])) { 
         echo "Your events for today are: ";
         echo date("Y-m-d") . '<br />';
-		while($statement->fetch())
+                while($statement->fetch())
         {
             echo $eid . ' ' . $start . ' ' . $end . ' ' . $duration . ' ' . $description . '<br />';
         }
-	} else {
-		echo 'Please Login';
+        } else {
+                echo 'Please Login';
     }
     ?>
 </body>
