@@ -2,23 +2,34 @@
 session_start();
 include("dbconfig.php");
 if(isset($_SESSION['pid'])) {
-    // Add security check
+
     $eid = $_POST['eid'];
-    foreach ($_POST['users'] as $userPid)
+    // Security check.
+    $statement2 = $mysqli->prepare("SELECT pid FROM event WHERE eid = ?") or die($mysqli->error);
+    $statement2->bind_param("i", $eid);
+    $statement2->execute();
+    $result2 = $statement2->bind_result($pid);
+    $statement2->fetch();
+    $statement2->store_result();
+
+    if ($pid == $_SESSION['pid'])
     {
-        $statement = $mysqli->prepare("INSERT INTO invited (pid, eid, response, visibility) VALUES (? ,?, ? ,?)") or die($mysqli->error);
-        $statement->bind_param("ssii", $userPid , $eid, $a = 0, $a = 0);
-        $statement->execute();
-        if($mysqli->errno == 1062)
+        foreach ($_POST['users'] as $userPid)
         {
-            echo "$userPid is already invited <br />";
+            $statement = $mysqli->prepare("INSERT INTO invited (pid, eid, response, visibility) VALUES (? ,?, ? ,?)") or die($mysqli->error);
+            $statement->bind_param("ssii", $userPid , $eid, $a = 0, $a = 0);
+            $statement->execute();
+            if($mysqli->errno == 1062)
+            {
+                echo "$userPid is already invited <br />";
+            }
+            else
+            {
+                echo $mysql->error;
+            }
         }
-        else
-        {
-            echo $mysql->error;
-        }
+        echo "Invites sent";
     }
-    echo "Invites sent";
 }
 ?>
 <!DOCTYPE html>

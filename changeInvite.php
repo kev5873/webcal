@@ -2,23 +2,11 @@
 session_start();
 include("dbconfig.php");
 if(isset($_SESSION['pid'])) {
-    // Finish this
     $eid = $_POST['eid'];
-    foreach ($_POST['users'] as $userPid)
-    {
-        $statement = $mysqli->prepare("INSERT INTO invited (pid, eid, response, visibility) VALUES (? ,?, ? ,?)") or die($mysqli->error);
-        $statement->bind_param("ssii", $userPid , $eid, $a = 0, $a = 0);
-        $statement->execute();
-        if($mysqli->errno == 1062)
-        {
-            echo "$userPid is already invited <br />";
-        }
-        else
-        {
-            echo $mysql->error;
-        }
-    }
-    echo "Invites sent";
+    $statement = $mysqli->prepare("UPDATE invited SET response = ?, visibility = ? WHERE eid = ? AND pid = ?") or die($mysqli->error);
+    $statement->bind_param("iiis", $_POST['response'], $_POST['visibility'], $_POST['eid'], $_SESSION['pid']);
+    $statement->execute() or die($mysqli->error);
+    echo "Changed Invite";
 }
 ?>
 <!DOCTYPE html>

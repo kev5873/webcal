@@ -22,7 +22,13 @@ if(isset($_SESSION['pid'])) {
 		while($statement->fetch())
         {
             echo 'Event: ' . $eid . ' Visibility Level: ' . $visibility . ' <br />';
-            echo ($response == 1) ? 'Accepted' : 'Declined';
+            if($response == 0) {
+                echo 'Not Responded';
+            } else if($response == 1) {
+                echo 'Accepted';
+            } else {
+                echo 'Declined';
+            }
             echo '<form method="post" action="changeInvite.php">
             <input type="hidden" name="eid" value="'.$eid.'">
             Your Response
