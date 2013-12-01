@@ -20,12 +20,16 @@ if(isset($_SESSION['pid'])) {
 <body>
     <?php
     if(isset($_SESSION['pid'])) { 
-        echo "Your events for today are: ";
+        echo "What is happening with this friend on this day: ";
         echo $_POST['date'] . '<br />';
         while($statement->fetch())
         {
-            if($visibility < $friend[1])
-                echo $eid . ' ' . $start . ' ' . $end . ' ' . $duration . ' ' . $description . ' ' . $visibility . ' ' . $friend[1] . '<br />';
+            if($visibility < $friend[1]){
+                echo "<div class='entry'>";
+                echo "<div class='left'><span class='bold'>$eid - $description</span><br />Duration: $duration</div>";
+                echo "<div class='right'> ".$_POST['date'].", Start Time: $start</div>";
+                echo "<div class='clear'></div></div><br />";
+            }
             else if($visibility >= $friend[1])
                 echo "This person is busy today.";
         }
