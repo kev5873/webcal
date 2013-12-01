@@ -25,7 +25,7 @@ GROUP BY event.eid
         echo "Here are the events you've organized: <br />";
 		while($statement->fetch())
         {
-            echo $eid . ' ' . $start . ' ' . $duration . ' ' . $description . ' ' . $pid . ' ' . $invited . '<br />';
+            echo $eid . ' ' . $start . ' ' . $duration . ' ' . $description . ' ' . $pid . ' ' . $invited . '<a href="issueInvitation.php?eid=' . $eid . '">Issue Invites</a><br />';
         }
 	} else {
 		echo 'Please Login';
