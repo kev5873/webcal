@@ -1,4 +1,8 @@
 <?php session_start(); ?>
+<!-- Kevin Ngao
+     CS 308
+     Final Project
+ -->
 <!DOCTYPE html>
 <html>
 <head>
